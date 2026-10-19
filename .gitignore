@@ -1,5 +1,15 @@
-# Object file
+# Object files
 *.o
 
 # Ada Library Information
 *.ali
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Local editor settings
+.vscode/
+
+# Logs and temporary files
+*.log
