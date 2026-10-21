@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="glow" cx="82%" cy="18%" r="55%">
+      <stop offset="0" stop-color="#E8892B" stop-opacity=".30"/>
+      <stop offset="1" stop-color="#E8892B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#12263F"/>
+      <stop offset="1" stop-color="#1B3858"/>
+    </linearGradient>
+    <pattern id="win" width="26" height="34" patternUnits="userSpaceOnUse">
+      <rect x="6" y="8" width="10" height="14" rx="1" fill="#F4B263" fill-opacity=".22"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="url(#sky)"/>
+  <rect width="1600" height="900" fill="url(#glow)"/>
+
+  <!-- gelembung pesan: simbol "fess" -->
+  <g fill="none" stroke="#fff" stroke-opacity=".10" stroke-width="3">
+    <path d="M120 120h250a28 28 0 0 1 28 28v70a28 28 0 0 1-28 28H250l-48 40v-40h-82a28 28 0 0 1-28-28v-70a28 28 0 0 1 28-28z"/>
+    <path d="M980 90h200a24 24 0 0 1 24 24v56a24 24 0 0 1-24 24h-40v34l-44-34h-116a24 24 0 0 1-24-24v-56a24 24 0 0 1 24-24z"/>
+    <path d="M1300 300h190a24 24 0 0 1 24 24v60a24 24 0 0 1-24 24h-120l-44 34v-34h-26a24 24 0 0 1-24-24v-60a24 24 0 0 1 24-24z"/>
+  </g>
+
+  <!-- siluet gedung kampus -->
+  <g>
+    <rect x="0"    y="620" width="210" height="280" fill="#183456"/>
+    <rect x="210"  y="560" width="170" height="340" fill="#1C3E63"/>
+    <rect x="380"  y="650" width="150" height="250" fill="#183456"/>
+    <polygon points="530,900 530,610 640,540 750,610 750,900" fill="#1C3E63"/>
+    <rect x="750"  y="590" width="190" height="310" fill="#183456"/>
+    <rect x="940"  y="520" width="150" height="380" fill="#1C3E63"/>
+    <rect x="1090" y="640" width="200" height="260" fill="#183456"/>
+    <rect x="1290" y="570" width="170" height="330" fill="#1C3E63"/>
+    <rect x="1460" y="630" width="140" height="270" fill="#183456"/>
+    <rect x="0" y="560" width="1600" height="340" fill="url(#win)"/>
+  </g>
+  <rect x="0" y="860" width="1600" height="40" fill="#12263F"/>
+</svg>

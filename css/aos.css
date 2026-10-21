@@ -1,0 +1,27 @@
+/*!
+ * aos.css - gaya animasi untuk js/aos.js (kompatibel dengan atribut data-aos AOS).
+ * Elemen baru disembunyikan SETELAH js/aos.js memberi kelas .aos-init,
+ * jadi bila JavaScript gagal dimuat, konten tetap terlihat.
+ * Mendukung: fade, fade-up, fade-down, fade-left, fade-right, zoom-in.
+ */
+[data-aos].aos-init {
+  transition-property: opacity, transform;
+  transition-duration: .7s;
+  transition-timing-function: cubic-bezier(.22, .61, .36, 1);
+  will-change: opacity, transform;
+}
+[data-aos].aos-init:not(.aos-animate) { opacity: 0; }
+[data-aos="fade-up"].aos-init:not(.aos-animate)    { transform: translate3d(0, 24px, 0); }
+[data-aos="fade-down"].aos-init:not(.aos-animate)  { transform: translate3d(0, -24px, 0); }
+[data-aos="fade-left"].aos-init:not(.aos-animate)  { transform: translate3d(24px, 0, 0); }
+[data-aos="fade-right"].aos-init:not(.aos-animate) { transform: translate3d(-24px, 0, 0); }
+[data-aos="zoom-in"].aos-init:not(.aos-animate)    { transform: scale(.94); }
+[data-aos].aos-init.aos-animate { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  [data-aos], [data-aos].aos-init {
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
