@@ -1,18 +1,14 @@
 /*!
- * smoothscroll.js - scroll halus untuk tautan anchor di halaman yang sama (mis. href="#daftar-fess").
- * JavaScript murni (tanpa jQuery), tidak membuat variabel global. Memperhitungkan tinggi navbar sticky
- * dan menghormati preferensi "kurangi gerakan" milik pengguna.
+ * smoothscroll.js - scroll halus untuk menu & tombol anchor (#home, #about, #fess-form, ...), tanpa reload halaman.
+ * JavaScript murni (tanpa jQuery), tidak membuat variabel global. Posisi berhenti memakai
+ * scroll-margin-top milik elemen tujuan (diatur di style.css) sehingga tidak tertutup navbar
+ * dan hasilnya sama dengan lompatan anchor bawaan browser. Menghormati "kurangi gerakan".
  */
 (function () {
   'use strict';
 
   function reduceMotion() {
     return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  }
-
-  function navHeight() {
-    var nav = document.querySelector('.site-nav');
-    return nav ? nav.offsetHeight : 0;
   }
 
   document.addEventListener('click', function (e) {
@@ -30,7 +26,8 @@
     if (!target) return;
 
     e.preventDefault();
-    var top = target.getBoundingClientRect().top + window.pageYOffset - navHeight() - 12;
+    var margin = parseFloat(window.getComputedStyle(target).scrollMarginTop) || 0;
+    var top = target.getBoundingClientRect().top + window.pageYOffset - margin;
     window.scrollTo({ top: Math.max(top, 0), behavior: reduceMotion() ? 'auto' : 'smooth' });
 
     if (window.history && window.history.pushState) window.history.pushState(null, '', url.hash);

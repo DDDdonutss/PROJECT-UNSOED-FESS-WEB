@@ -1,8 +1,9 @@
 /*
  * UNSOED FESS - logika fess (data disimpan di localStorage browser, tanpa backend/database).
- * Seluruh kode dibungkus IIFE: tidak ada variabel global baru, jadi aman berdampingan dengan
+ * Seluruh kode dibungkus IIFE: tidak ada variabel/fungsi global baru, jadi aman berdampingan dengan
  * jquery.min.js, bootstrap.min.js, aos.js, smoothscroll.js, dan custom.js.
- * Kunci penyimpanan sama dengan versi lama, jadi fess lama di browser tetap terbaca.
+ * Kunci penyimpanan sama dengan versi lama, jadi fess lama di browser tetap terbaca
+ * (fess lama tanpa kategori tampil tanpa lencana kategori).
  */
 (function () {
   'use strict';
@@ -10,8 +11,18 @@
   var STORAGE_KEY = 'unsoedFessPosts';
   var MAX_LENGTH = 500;
   var NEAR_LIMIT = 450;
-  var PREVIEW_COUNT = 3;
-  var ENABLE_RESET = true; // ubah ke false untuk menyembunyikan tombol Reset Semua
+  var ENABLE_RESET = true; // ubah ke false untuk menyembunyikan tombol Reset Semua Fess
+
+  // Daftar kategori yang diizinkan. Label & ikon hanya diambil dari sini (bukan dari data pengguna).
+  var CATEGORIES = {
+    'aspirasi':    { label: 'Aspirasi',    icon: 'fa-bullhorn' },
+    'lelucon':     { label: 'Lelucon',     icon: 'fa-face-laugh-beam' },
+    'keluh-kesah': { label: 'Keluh Kesah', icon: 'fa-comment-dots' }
+  };
+
+  function isCategory(key) {
+    return typeof key === 'string' && Object.prototype.hasOwnProperty.call(CATEGORIES, key);
+  }
 
   /* ---------- penyimpanan ---------- */
 
@@ -47,9 +58,25 @@
     return new Date(iso).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' });
   }
 
+  function buildBadge(key) {
+    var cat = CATEGORIES[key];
+    var badge = document.createElement('span');
+    badge.className = 'cat-badge';
+
+    var icon = document.createElement('i');
+    icon.className = 'fa-solid ' + cat.icon;
+    icon.setAttribute('aria-hidden', 'true');
+
+    badge.appendChild(icon);
+    badge.appendChild(document.createTextNode(' ' + cat.label));
+    return badge;
+  }
+
   function buildCard(post) {
     var card = document.createElement('article');
     card.className = 'fess-card';
+
+    if (isCategory(post.category)) card.appendChild(buildBadge(post.category));
 
     var p = document.createElement('p');
     p.textContent = post.text; // textContent mencegah HTML/script tersisip (XSS)
@@ -70,21 +97,38 @@
     return p;
   }
 
-  /* ---------- halaman fess.html ---------- */
+  /* ---------- kotak fess + daftar fess ---------- */
 
-  function initFessPage(form) {
+  function initFessBox(form) {
     var input = document.getElementById('fess-text');
     var counter = document.getElementById('counter');
     var msg = document.getElementById('msg');
     var list = document.getElementById('fess-container');
     var resetBtn = document.getElementById('reset-btn');
     var countLabel = document.getElementById('fess-count');
+    var picker = document.getElementById('cat-picker');
     if (!input || !counter || !msg || !list) return;
 
-    function say(text, kind) {
+    function selectedCategory() {
+      var checked = form.querySelector('input[name="category"]:checked');
+      return checked ? checked.value : '';
+    }
+
+    function clearCategory() {
+      var checked = form.querySelector('input[name="category"]:checked');
+      if (checked) checked.checked = false;
+    }
+
+    // kind: 'error' | 'ok' | undefined ; field: 'text' | 'category' | undefined
+    function say(text, kind, field) {
       msg.textContent = text;
       msg.className = 'form-msg' + (kind ? ' is-' + kind : '');
-      input.classList.toggle('has-error', kind === 'error');
+      input.classList.toggle('has-error', kind === 'error' && field === 'text');
+      if (picker) picker.classList.toggle('has-error', kind === 'error' && field === 'category');
+    }
+
+    function clearError() {
+      if (msg.classList.contains('is-error')) say('');
     }
 
     function updateCounter() {
@@ -113,32 +157,44 @@
 
     input.addEventListener('input', function () {
       updateCounter();
-      if (msg.classList.contains('is-error')) say('');
+      clearError();
+    });
+
+    form.addEventListener('change', function (e) {
+      if (e.target && e.target.name === 'category') clearError();
     });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       var text = input.value.trim();
+      var category = selectedCategory();
 
       if (!text) {
-        say('Fess tidak boleh kosong. Tulis sesuatu dulu.', 'error');
+        say('Fess tidak boleh kosong. Tulis sesuatu dulu.', 'error', 'text');
         input.focus();
         return;
       }
       if (text.length > MAX_LENGTH) {
-        say('Fess terlalu panjang. Maksimal ' + MAX_LENGTH + ' karakter.', 'error');
+        say('Fess terlalu panjang. Maksimal ' + MAX_LENGTH + ' karakter.', 'error', 'text');
         input.focus();
+        return;
+      }
+      if (!isCategory(category)) {
+        say('Pilih kategori dulu: Aspirasi, Lelucon, atau Keluh Kesah.', 'error', 'category');
+        var firstRadio = form.querySelector('input[name="category"]');
+        if (firstRadio) firstRadio.focus();
         return;
       }
 
       var posts = loadPosts();
-      posts.push({ id: Date.now(), text: text, time: new Date().toISOString() });
+      posts.push({ id: Date.now(), text: text, category: category, time: new Date().toISOString() });
       if (!savePosts(posts)) {
         say('Fess gagal disimpan. Penyimpanan browser tidak tersedia atau penuh.', 'error');
         return;
       }
 
       input.value = '';
+      clearCategory();
       updateCounter();
       say('Fess terkirim.', 'ok');
       render();
@@ -154,39 +210,30 @@
       });
     }
 
+    // Tombol "Tulis ..." di section Kategori: pilih kategori di form (scroll ditangani smoothscroll.js)
+    document.addEventListener('click', function (e) {
+      var trigger = e.target.closest ? e.target.closest('[data-pick-category]') : null;
+      if (!trigger) return;
+      var key = trigger.getAttribute('data-pick-category');
+      if (!isCategory(key)) return;
+      var radio = document.getElementById('cat-' + key);
+      if (radio) { radio.checked = true; clearError(); }
+    });
+
     // Tab lain mengubah data -> tampilan ikut diperbarui
     window.addEventListener('storage', function (e) {
       if (e.key === STORAGE_KEY || e.key === null) render();
     });
 
     updateCounter();
-    render(); // otomatis tampil saat halaman dimuat
-  }
-
-  /* ---------- cuplikan di index.html ---------- */
-
-  function initHomePreview(box) {
-    var note = document.getElementById('terbaru-note');
-    var posts = loadPosts();
-    if (posts.length === 0) return; // biarkan kartu contoh statis dari HTML
-
-    var frag = document.createDocumentFragment();
-    posts.slice(-PREVIEW_COUNT).reverse().forEach(function (post) {
-      frag.appendChild(buildCard(post));
-    });
-    box.textContent = '';
-    box.appendChild(frag);
-    if (note) note.textContent = 'Tiga fess terbaru yang tersimpan di browser ini.';
+    render(); // otomatis tampil saat index.html dimuat
   }
 
   /* ---------- mulai ---------- */
 
   function start() {
-    var form = document.getElementById('fess-form');
-    if (form) initFessPage(form);
-
-    var preview = document.getElementById('fess-terbaru');
-    if (preview) initHomePreview(preview);
+    var form = document.getElementById('fess-post-form');
+    if (form) initFessBox(form);
   }
 
   if (document.readyState === 'loading') {
