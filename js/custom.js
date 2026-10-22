@@ -1,6 +1,7 @@
 /*
- * custom.js - interaksi tampilan (navbar, animasi). Memakai jQuery di dalam scope sendiri.
- * Logika fess + localStorage ada di js/app.js (dipisah agar tidak saling bentrok).
+ * custom.js - interaksi tampilan: animasi AOS, bayangan navbar saat scroll, menu aktif (scrollspy),
+ * dan menutup menu mobile. Memakai jQuery di dalam scope sendiri (tidak ada global baru).
+ * Logika fess + localStorage ada di js/app.js; scroll halus ada di js/smoothscroll.js.
  */
 (function ($) {
   'use strict';
@@ -11,13 +12,49 @@
       window.AOS.init({ duration: 700, once: true, offset: 60 });
     }
 
-    // Navbar sticky: tambah bayangan & rapatkan saat halaman di-scroll
     var $nav = $('.site-nav');
-    function onScroll() {
-      $nav.toggleClass('is-scrolled', $(window).scrollTop() > 40);
+    var $links = $('#mainNav .nav-link');
+    var sections = $links.map(function () {
+      var id = (this.getAttribute('href') || '').replace('#', '');
+      return id ? document.getElementById(id) : null;
+    }).get();
+    var ticking = false;
+
+    function navOffset() {
+      return ($nav.outerHeight() || 0) + 40;
     }
-    $(window).on('scroll', onScroll);
-    onScroll();
+
+    // Tandai menu sesuai section yang sedang dilihat
+    function update() {
+      ticking = false;
+      var y = $(window).scrollTop();
+      $nav.toggleClass('is-scrolled', y > 40);
+
+      var current = null;
+      var line = y + navOffset();
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i] && sections[i].offsetTop <= line) current = sections[i];
+      }
+      var atBottom = window.innerHeight + y >= document.documentElement.scrollHeight - 4;
+      if (atBottom && sections.length) current = sections[sections.length - 1];
+
+      $links.each(function () {
+        var active = !!current && this.getAttribute('href') === '#' + current.id;
+        $(this).toggleClass('active', active);
+        if (active) this.setAttribute('aria-current', 'location');
+        else this.removeAttribute('aria-current');
+      });
+    }
+
+    function onScroll() {
+      if (!ticking) {
+        ticking = true;
+        window.requestAnimationFrame(update);
+      }
+    }
+
+    $(window).on('scroll resize', onScroll);
+    update();
 
     // Tutup menu mobile setelah salah satu tautan diklik
     $('#mainNav .nav-link').on('click', function () {
