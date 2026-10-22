@@ -7,6 +7,8 @@
 <meta name="theme-color" content="#12263F">
 <title>UNSOED FESS</title>
 <link rel="icon" type="image/svg+xml" href="images/favicon.svg">
+<!-- tema gelap/terang: dimuat di <head> agar tema tersimpan terpasang sebelum halaman digambar -->
+<script src="js/theme.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
@@ -21,6 +23,7 @@
 <nav class="navbar navbar-expand-md fixed-top site-nav" data-bs-theme="dark" aria-label="Navigasi utama">
   <div class="container">
     <a class="navbar-brand" href="#home"><img src="images/favicon.svg" alt="" width="30" height="30"><span>UNSOED FESS</span></a>
+    <button class="theme-toggle order-md-last ms-auto ms-md-3 me-2 me-md-0" id="theme-toggle" type="button" aria-label="Beralih ke mode gelap" title="Beralih ke mode gelap"><i class="fa-solid fa-moon" aria-hidden="true"></i></button>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Buka menu navigasi">
       <span class="navbar-toggler-icon"></span>
     </button>
