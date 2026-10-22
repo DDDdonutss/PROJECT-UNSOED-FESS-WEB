@@ -5,7 +5,8 @@
    ========================================================= */
 
 :root {
-  --ink: #12263F;
+  --ink: #12263F;   /* navy merek: navbar, footer, hero, teks tombol oranye */
+  --text: #12263F;  /* warna teks; berganti terang di mode gelap */
   --bg: #EDF1F6;
   --bg-deep: #E1E8F1;
   --paper: #FFFFFF;
@@ -17,6 +18,10 @@
   --on-dark: #C9D6E8;
   --danger: #B3261E;
   --ok: #1D7A46;
+  --badge-bg: var(--ink);       /* lingkaran ikon */
+  --chip-on-bg: var(--ink);     /* chip kategori terpilih */
+  --chip-on-fg: #fff;
+  --chip-on-icon: var(--orange);
 
   --nav-offset: 66px; /* tinggi navbar fixed; dipakai hero, scroll-margin, dan form sticky */
 
@@ -25,13 +30,33 @@
 
   /* menetralkan skin bawaan bootstrap.min.css */
   --bs-body-font-family: var(--font-body);
-  --bs-body-color: var(--ink);
+  --bs-body-color: var(--text);
   --bs-body-bg: var(--bg);
-  --bs-heading-color: var(--ink);
+  --bs-heading-color: var(--text);
   --bs-link-color: var(--blue);
   --bs-link-color-rgb: 47, 93, 154;
-  --bs-link-hover-color: var(--ink);
+  --bs-link-hover-color: var(--text);
   --bs-link-hover-color-rgb: 18, 38, 63;
+}
+
+/* ---------- mode gelap: aktif lewat <html data-bs-theme="dark"> (diatur js/theme.js) ---------- */
+:root[data-bs-theme="dark"] {
+  --text: #E6EDF7;
+  --bg: #0D1726;
+  --bg-deep: #09111E;
+  --paper: #16233A;
+  --line: #2B3C58;
+  --muted: #9FB0C9;
+  --blue: #8DB4EA;
+  --orange-dark: #F0A04B;
+  --danger: #FF8F87;
+  --ok: #5FD08A;
+  --badge-bg: #22375A;
+  --chip-on-bg: var(--orange);
+  --chip-on-fg: var(--ink);
+  --chip-on-icon: var(--ink);
+  --bs-link-color-rgb: 141, 180, 234;
+  --bs-link-hover-color-rgb: 230, 237, 247;
 }
 
 /* ---------- dasar ---------- */
@@ -39,7 +64,7 @@ body {
   font-family: var(--font-body);
   font-size: 1.0625rem;
   line-height: 1.6;
-  color: var(--ink);
+  color: var(--text);
   background: var(--bg);
 }
 h1, h2, h3, h4 {
@@ -53,7 +78,7 @@ h2 { font-size: clamp(1.7rem, 3.6vw, 2.3rem); }
 h3 { font-size: 1.25rem; }
 p { max-width: 68ch; }
 a { color: var(--blue); }
-a:hover { color: var(--ink); }
+a:hover { color: var(--text); }
 .container { max-width: 1040px; }
 
 /* tujuan anchor berhenti tepat di bawah navbar (dipakai smoothscroll.js & lompatan bawaan browser) */
@@ -90,6 +115,22 @@ a:hover { color: var(--ink); }
 .site-nav .nav-link.active { color: #fff; border-bottom-color: var(--orange); }
 .site-nav .navbar-toggler { border-color: rgba(255, 255, 255, .4); }
 .site-nav .navbar-toggler:focus { box-shadow: 0 0 0 .2rem rgba(232, 137, 43, .5); }
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .4);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--orange);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+.theme-toggle:hover { background: rgba(255, 255, 255, .1); border-color: #fff; }
 @media (max-width: 767.98px) {
   .site-nav .nav-link { margin-left: 0; display: inline-block; }
   .site-nav .navbar-nav { padding: .75rem 0 .35rem; gap: .25rem; }
@@ -113,8 +154,8 @@ a:hover { color: var(--ink); }
 }
 .btn-fess { background: var(--orange); color: var(--ink); }
 .btn-fess:hover, .btn-fess:focus-visible { background: #F29B42; border-color: #F29B42; color: var(--ink); }
-.btn-fess-outline { background: transparent; color: var(--ink); border-color: var(--ink); }
-.btn-fess-outline:hover { background: var(--ink); color: #fff; }
+.btn-fess-outline { background: transparent; color: var(--text); border-color: var(--text); }
+.btn-fess-outline:hover { background: var(--text); color: var(--paper); }
 .btn-sm-fess { font-size: .95rem; padding: .35rem .9rem; }
 
 /* ---------- hero (dengan overlay) ---------- */
@@ -155,7 +196,7 @@ a:hover { color: var(--ink); }
 .note, .fess-card {
   position: relative;
   background: var(--paper);
-  color: var(--ink);
+  color: var(--text);
   border: 1px solid var(--line);
   border-radius: 4px;
   padding: 24px 20px 16px;
@@ -201,7 +242,7 @@ a:hover { color: var(--ink); }
   margin: 0 0 1.25rem;
   padding-left: .85rem;
   border-left: 3px solid var(--orange);
-  color: var(--ink);
+  color: var(--text);
   font-size: .98rem;
 }
 .kind-card .btn-fess-outline { margin-top: auto; }
@@ -213,7 +254,7 @@ a:hover { color: var(--ink); }
   height: 52px;
   flex: none;
   border-radius: 50%;
-  background: var(--ink);
+  background: var(--badge-bg);
   color: var(--orange);
   font-size: 1.3rem;
   margin-bottom: 1rem;
@@ -255,8 +296,8 @@ a:hover { color: var(--ink); }
 .fess-form .form-control {
   font-family: var(--font-body);
   font-size: 1.0625rem;
-  color: var(--ink);
-  background: #fff;
+  color: var(--text);
+  background: var(--paper);
   border: 2px solid var(--line);
   border-radius: 6px;
   padding: .6rem .75rem;
@@ -281,16 +322,16 @@ a:hover { color: var(--ink); }
   padding: .4rem .95rem;
   border: 2px solid var(--line);
   border-radius: 999px;
-  background: #fff;
+  background: var(--paper);
   font-size: .98rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color .15s ease, border-color .15s ease, color .15s ease;
 }
 .cat-chip i { color: var(--orange-dark); }
-.cat-chip:hover { border-color: var(--ink); }
-.cat-input:checked + .cat-chip { background: var(--ink); border-color: var(--ink); color: #fff; }
-.cat-input:checked + .cat-chip i { color: var(--orange); }
+.cat-chip:hover { border-color: var(--text); }
+.cat-input:checked + .cat-chip { background: var(--chip-on-bg); border-color: var(--chip-on-bg); color: var(--chip-on-fg); }
+.cat-input:checked + .cat-chip i { color: var(--chip-on-icon); }
 .cat-input:focus-visible + .cat-chip { outline: 3px solid var(--orange); outline-offset: 2px; }
 .cat-picker.has-error .cat-chip { border-color: var(--danger); }
 
@@ -327,7 +368,7 @@ a:hover { color: var(--ink); }
   background: var(--bg);
   font-size: .85rem;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--text);
 }
 .cat-badge i { color: var(--orange-dark); }
 .empty-state {
