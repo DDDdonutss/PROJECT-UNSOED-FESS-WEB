@@ -14,9 +14,9 @@
 
 | No | Nama | Username GitHub | Peran |
 |----|------|-----------------|-------|
-| 1 | [ISI: Nama Lengkap] | [@DDDdonutss](https://github.com/DDDdonutss) | Maintainer & Frontend Developer |
-| 2 | [ISI: Nama Lengkap] | [@PanjiSuryaGemilang](https://github.com/PanjiSuryaGemilang) | Frontend Developer |
-| 3 | [ISI: Nama Lengkap] | [@PanjiSuryaGemilang3](https://github.com/PanjiSuryaGemilang3) | Frontend Developer |
+| 1 | PanjiSuryaGemilang | [@DDDdonutss](https://github.com/DDDdonutss) | Ketua,H1D026089|
+| 2 | PanjiSuryaGemilang2 | [@PanjiSuryaGemilang](https://github.com/PanjiSuryaGemilang) | Anggota,H1D026089 |
+| 3 | PanjiSuryaGemilang3 | [@PanjiSuryaGemilang3](https://github.com/PanjiSuryaGemilang3) | Anggota,H1D026089 |
 
 ---
 
@@ -147,8 +147,8 @@ Riwayat lengkap dapat dilihat pada [issue yang sudah ditutup](https://github.com
 
 ## Dokumentasi
 
-Tangkapan layar halaman utama dan bagian penting website tersedia di [DOKUMENTASI.md](DOKUMENTASI.md). Seluruh gambar disimpan pada folder [`screenshots/`](screenshots/).
 
----
 
-*Dibuat oleh tim UNSOED FESS — Oktober 2026.*
+https://github.com/user-attachments/assets/96f96c08-cee0-42f2-89e0-977d051567b6
+
+
