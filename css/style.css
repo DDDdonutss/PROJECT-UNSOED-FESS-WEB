@@ -1,4 +1,4 @@
-/* =========================================================*
+/* =========================================================
    UNSOED FESS - style.css (single page)
    Dimuat SETELAH bootstrap, font-awesome, dan aos agar menimpa gayanya.
    Palet: navy #12263F | oranye #E8892B | latar #EDF1F6
@@ -14,7 +14,7 @@
   --orange: #E8892B;
   --orange-dark: #C96F14;
   --line: #CDD7E4;
-  --muted: #5B6D85;
+  --muted: #52647C;             /* >= 4.5:1 juga di atas --bg-deep */
   --on-dark: #C9D6E8;
   --danger: #B3261E;
   --ok: #1D7A46;
@@ -22,8 +22,10 @@
   --chip-on-bg: var(--ink);     /* chip kategori terpilih */
   --chip-on-fg: #fff;
   --chip-on-icon: var(--orange);
+  --control-line: #667A95;      /* garis tepi kolom isian & chip kategori: >= 3:1 terhadap latar (WCAG 1.4.11) */
+  --focus: #B35800;             /* cincin fokus (>= 3:1) dan teks peringatan (>= 4.5:1) di latar terang */
 
-  --nav-offset: 66px; /* tinggi navbar fixed; dipakai hero, scroll-margin, dan form sticky */
+  --nav-offset: 4.125rem; /* tinggi navbar fixed (66px pada ukuran teks standar, ikut membesar bila teks diperbesar); dipakai hero, scroll-padding, dan form sticky */
 
   --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
   --font-body: "Source Sans 3", "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -55,9 +57,14 @@
   --chip-on-bg: var(--orange);
   --chip-on-fg: var(--ink);
   --chip-on-icon: var(--ink);
+  --control-line: #62799C;
+  --focus: var(--orange);
   --bs-link-color-rgb: 141, 180, 234;
   --bs-link-hover-color-rgb: 230, 237, 247;
 }
+
+/* permukaan navy (navbar, hero, visi, footer, tautan lompat): cincin fokus tetap oranye terang (5.9:1 di atas navy) */
+.site-nav, .hero, .vision, .site-footer, .skip-link { --focus: var(--orange); }
 
 /* ---------- dasar ---------- */
 body {
@@ -75,17 +82,36 @@ h1, h2, h3, h4 {
   font-weight: 800;
 }
 h2 { font-size: clamp(1.7rem, 3.6vw, 2.3rem); }
-h3 { font-size: 1.25rem; }
+h3, .kind-card h4 { font-size: 1.25rem; }
 p { max-width: 68ch; }
 a { color: var(--blue); }
 a:hover { color: var(--text); }
 .container { max-width: 1040px; }
+/* gutter row .gx-lg-5 (3rem) harus sama dengan padding container, bila tidak halaman melebar 12px di 992-1063px */
+@media (min-width: 992px) { .container { --bs-gutter-x: 3rem; } }
 
 /* tujuan anchor berhenti tepat di bawah navbar (dipakai smoothscroll.js & lompatan bawaan browser) */
-[id] { scroll-margin-top: var(--nav-offset); }
-#daftar-fess { scroll-margin-top: calc(var(--nav-offset) + 16px); }
+/* area yang tertutup navbar fixed. Dipakai browser untuk lompatan anchor DAN saat menggulir elemen yang menerima fokus
+   keyboard (mis. Shift+Tab ke atas), jadi fokus tidak tersembunyi di balik navbar (WCAG 2.4.11); smoothscroll.js ikut membacanya */
+html { scroll-padding-top: calc(var(--nav-offset) + 12px); }
+#daftar-fess { scroll-margin-top: 16px; }
 [tabindex="-1"]:focus { outline: 0; }
-:focus-visible { outline: 3px solid var(--orange); outline-offset: 2px; }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+/* tautan lompat ke konten: di luar layar, muncul saat mendapat fokus keyboard */
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 2000;
+  padding: .6rem 1rem;
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--text);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-200%);
+}
+.skip-link:focus { transform: none; }
 
 /* ---------- navbar (fixed) ---------- */
 .site-nav {
@@ -114,7 +140,9 @@ a:hover { color: var(--text); }
 .site-nav .nav-link:hover,
 .site-nav .nav-link.active { color: #fff; border-bottom-color: var(--orange); }
 .site-nav .navbar-toggler { border-color: rgba(255, 255, 255, .4); }
-.site-nav .navbar-toggler:focus { box-shadow: 0 0 0 .2rem rgba(232, 137, 43, .5); }
+.site-nav .navbar-toggler:focus { box-shadow: none; }
+.site-nav .navbar-toggler:focus-visible,
+.site-nav .nav-link:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; box-shadow: none; }
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -132,8 +160,17 @@ a:hover { color: var(--text); }
 }
 .theme-toggle:hover { background: rgba(255, 255, 255, .1); border-color: #fff; }
 @media (max-width: 767.98px) {
-  .site-nav .nav-link { margin-left: 0; display: inline-block; }
+  /* bila teks diperbesar, merek membungkus baris (menyisakan ruang untuk tombol tema + hamburger) alih-alih mendorong
+     tombol ke baris kedua yang membuat navbar membengkak dan menutupi judul hero; ukuran teks standar tidak berubah */
+  .site-nav .navbar-brand { min-width: 0; max-width: calc(100% - 7.5rem); white-space: normal; }
+  .site-nav .nav-link { margin-left: 0; display: inline-block; padding: .55rem 0; }
   .site-nav .navbar-nav { padding: .75rem 0 .35rem; gap: .25rem; }
+}
+/* layar sangat sempit (<= 359px): merek dipadatkan agar logo, tombol tema, dan hamburger tetap satu baris */
+@media (max-width: 359.98px) {
+  .site-nav .navbar-brand { gap: .45rem; margin-right: .25rem; font-size: 1.1rem; max-width: calc(100% - 6.25rem); }
+  .site-nav .navbar-brand img { width: 26px; height: 26px; }
+  .site-nav .navbar-toggler { padding-left: .5rem; padding-right: .5rem; }
 }
 
 /* ---------- tombol ---------- */
@@ -164,7 +201,7 @@ a:hover { color: var(--text); }
   display: flex;
   align-items: center;
   min-height: min(92vh, 820px);
-  padding: calc(var(--nav-offset) + clamp(40px, 7vw, 88px)) 0 clamp(64px, 9vw, 112px);
+  padding: calc(var(--nav-offset) + clamp(2.5rem, 7vw, 5.5rem)) 0 clamp(64px, 9vw, 112px);
   color: #fff;
   background: var(--ink) url("../images/hero-bg.svg") center / cover no-repeat;
   overflow: hidden;
@@ -261,7 +298,7 @@ a:hover { color: var(--text); }
 }
 
 /* ---------- about ---------- */
-#about h3 { margin-bottom: .4em; }
+#about h3, #about .kind-card h4 { margin-bottom: .4em; }
 .rules-card {
   background: var(--paper);
   border: 1px solid var(--line);
@@ -291,21 +328,24 @@ a:hover { color: var(--text); }
   padding: 24px;
   box-shadow: 3px 4px 0 var(--line);
 }
-@media (min-width: 992px) { .fess-form-wrap { position: sticky; top: calc(var(--nav-offset) + 24px); } }
+/* sticky hanya bila layar cukup tinggi; di layar pendek (HP landscape, zoom) bagian bawah form bisa tak terjangkau */
+@media (min-width: 992px) and (min-height: 720px) { .fess-form-wrap { position: sticky; top: calc(var(--nav-offset) + 24px); } }
 .fess-form label { display: block; font-weight: 600; margin-bottom: .5rem; }
 .fess-form .form-control {
   font-family: var(--font-body);
   font-size: 1.0625rem;
   color: var(--text);
   background: var(--paper);
-  border: 2px solid var(--line);
+  border: 2px solid var(--control-line);
   border-radius: 6px;
   padding: .6rem .75rem;
   resize: vertical;
 }
 .fess-form .form-control:focus {
-  border-color: var(--orange);
-  box-shadow: 0 0 0 .2rem rgba(232, 137, 43, .25);
+  border-color: var(--focus);
+  box-shadow: none;
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
 }
 .fess-form .form-control.has-error { border-color: var(--danger); }
 
@@ -320,7 +360,7 @@ a:hover { color: var(--text); }
   gap: .45rem;
   margin: 0;
   padding: .4rem .95rem;
-  border: 2px solid var(--line);
+  border: 2px solid var(--control-line);
   border-radius: 999px;
   background: var(--paper);
   font-size: .98rem;
@@ -332,12 +372,14 @@ a:hover { color: var(--text); }
 .cat-chip:hover { border-color: var(--text); }
 .cat-input:checked + .cat-chip { background: var(--chip-on-bg); border-color: var(--chip-on-bg); color: var(--chip-on-fg); }
 .cat-input:checked + .cat-chip i { color: var(--chip-on-icon); }
-.cat-input:focus-visible + .cat-chip { outline: 3px solid var(--orange); outline-offset: 2px; }
+/* chip terpilih: ikon berganti tanda centang, jadi pilihan tidak hanya dibedakan lewat warna */
+.cat-input:checked + .cat-chip i::before { content: "\f00c"; }
+.cat-input:focus-visible + .cat-chip { outline: 3px solid var(--focus); outline-offset: 2px; }
 .cat-picker.has-error .cat-chip { border-color: var(--danger); }
 
 .form-row-foot { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: .75rem; }
 #counter { font-size: .95rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-#counter.is-near { color: var(--orange-dark); font-weight: 600; }
+#counter.is-near { color: var(--focus); font-weight: 600; }
 .form-msg { margin: .75rem 0 0; min-height: 1.5em; font-weight: 600; }
 .form-msg.is-error { color: var(--danger); }
 .form-msg.is-ok { color: var(--ok); }
@@ -345,7 +387,7 @@ a:hover { color: var(--text); }
 
 /* daftar fess */
 .list-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; margin-bottom: 1.25rem; }
-.list-head h2 { margin: 0; font-size: clamp(1.5rem, 3vw, 1.9rem); }
+.list-head h3 { margin: 0; font-size: clamp(1.5rem, 3vw, 1.9rem); }
 .list-head .count { font: 400 .95rem var(--font-body); color: var(--muted); margin-left: .5rem; }
 #fess-container { display: grid; gap: 28px; padding-top: 10px; }
 
@@ -366,14 +408,14 @@ a:hover { color: var(--text); }
   font-size: 1rem;
   color: var(--text);
   background: var(--paper);
-  border: 2px solid var(--line);
+  border: 2px solid var(--control-line);
   border-radius: 6px;
   padding: .45rem .75rem .45rem 2.5rem;
   -webkit-appearance: none;
   appearance: none;
 }
 .search-input::placeholder { color: var(--muted); opacity: 1; }
-.search-input:focus { outline: 0; border-color: var(--orange); box-shadow: 0 0 0 .2rem rgba(232, 137, 43, .25); }
+.search-input:focus { border-color: var(--focus); outline: 3px solid var(--focus); outline-offset: 2px; }
 .fess-card p { margin: 0 0 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .fess-card time { display: block; font-size: .9rem; color: var(--muted); }
 .fess-card time::before {
@@ -421,7 +463,7 @@ a:hover { color: var(--text); }
 }
 .contact-card .icon-badge { margin: 0; }
 .contact-card strong { display: block; font-family: var(--font-display); font-size: 1.1rem; }
-.contact-card a { overflow-wrap: break-word; }
+.contact-card a { display: inline-block; padding: .25rem 0; overflow-wrap: break-word; } /* area sentuh >= 24px */
 .contact-card > div { min-width: 0; }
 .contact-note {
   background: var(--paper);
@@ -436,9 +478,12 @@ a:hover { color: var(--text); }
 .site-footer { background: var(--ink); color: var(--on-dark); padding: 36px 0 30px; font-size: .97rem; }
 .site-footer .brand { font: 800 1.2rem var(--font-display); color: #fff; margin: 0 0 .25rem; }
 .site-footer p { margin: 0; }
-.site-footer a { color: #fff; text-decoration: none; margin-right: 1.1rem; }
-.site-footer .foot-links a:last-child { margin-right: 0; }
+.site-footer a { color: #fff; text-decoration: none; }
 .site-footer a:hover { color: var(--orange); }
+/* flex-wrap: tautan di HTML tidak dipisah spasi sehingga sebelumnya tak bisa pindah baris (overflow di <= 360px) */
+.site-footer .foot-links { display: flex; flex-wrap: wrap; gap: 0 1.1rem; }
+.site-footer .foot-links a { padding: .5rem 0; }
+@media (min-width: 768px) { .site-footer .foot-links { justify-content: flex-end; } }
 .site-footer .copy { max-width: none; margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255, 255, 255, .15); font-size: .9rem; }
 
 /* ---------- aksesibilitas ---------- */

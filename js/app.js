@@ -1,5 +1,4 @@
 /*
-
  * UNSOED FESS - logika fess (data disimpan di localStorage browser, tanpa backend/database).
  * Seluruh kode dibungkus IIFE: tidak ada variabel/fungsi global baru, jadi aman berdampingan dengan
  * jquery.min.js, bootstrap.min.js, aos.js, smoothscroll.js, dan custom.js.
@@ -111,6 +110,7 @@
     var searchWrap = document.getElementById('fess-search');
     var searchInput = document.getElementById('fess-search-input');
     var searchEmpty = document.getElementById('search-empty');
+    var searchStatus = document.getElementById('search-status');
     if (!input || !counter || !msg || !list) return;
 
     function selectedCategory() {
@@ -125,10 +125,17 @@
 
     // kind: 'error' | 'ok' | undefined ; field: 'text' | 'category' | undefined
     function say(text, kind, field) {
+      var textError = kind === 'error' && field === 'text';
+      var categoryError = kind === 'error' && field === 'category';
       msg.textContent = text;
       msg.className = 'form-msg' + (kind ? ' is-' + kind : '');
-      input.classList.toggle('has-error', kind === 'error' && field === 'text');
-      if (picker) picker.classList.toggle('has-error', kind === 'error' && field === 'category');
+      input.classList.toggle('has-error', textError);
+      // aria-invalid / aria-describedby: pembaca layar tahu field mana yang salah dan membaca pesannya
+      if (textError) input.setAttribute('aria-invalid', 'true'); else input.removeAttribute('aria-invalid');
+      if (picker) {
+        picker.classList.toggle('has-error', categoryError);
+        if (categoryError) picker.setAttribute('aria-describedby', 'msg'); else picker.removeAttribute('aria-describedby');
+      }
     }
 
     function clearError() {
@@ -166,8 +173,18 @@
       }
     }
 
+    // Jumlah hasil dibacakan pembaca layar lewat #search-status (hanya saat pengguna mengetik).
+    // Kasus "tidak ada hasil" sudah dibacakan oleh #search-empty, jadi di sini dikosongkan.
+    function announceSearch() {
+      if (!searchStatus || !searchInput) return;
+      var total = list.querySelectorAll('.fess-card').length;
+      var shown = list.querySelectorAll('.fess-card:not([hidden])').length;
+      searchStatus.textContent = (searchInput.value.trim() !== '' && shown > 0) ? shown + ' dari ' + total + ' fess cocok.' : '';
+    }
+
     function clearSearch() {
       if (searchInput) searchInput.value = '';
+      if (searchStatus) searchStatus.textContent = '';
     }
 
     function render() {
@@ -197,7 +214,12 @@
     });
 
     // real-time: setiap ketikan langsung menyaring kartu
-    if (searchInput) searchInput.addEventListener('input', applySearch);
+    if (searchInput) {
+      searchInput.addEventListener('input', function () {
+        applySearch();
+        announceSearch();
+      });
+    }
 
     form.addEventListener('change', function (e) {
       if (e.target && e.target.name === 'category') clearError();
