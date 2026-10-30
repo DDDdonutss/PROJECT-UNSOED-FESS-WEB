@@ -1,4 +1,5 @@
 /*
+
  * UNSOED FESS - logika fess (data disimpan di localStorage browser, tanpa backend/database).
  * Seluruh kode dibungkus IIFE: tidak ada variabel/fungsi global baru, jadi aman berdampingan dengan
  * jquery.min.js, bootstrap.min.js, aos.js, smoothscroll.js, dan custom.js.
@@ -107,6 +108,9 @@
     var resetBtn = document.getElementById('reset-btn');
     var countLabel = document.getElementById('fess-count');
     var picker = document.getElementById('cat-picker');
+    var searchWrap = document.getElementById('fess-search');
+    var searchInput = document.getElementById('fess-search-input');
+    var searchEmpty = document.getElementById('search-empty');
     if (!input || !counter || !msg || !list) return;
 
     function selectedCategory() {
@@ -137,6 +141,35 @@
       counter.classList.toggle('is-near', n >= NEAR_LIMIT);
     }
 
+    // Pencarian: cocokkan teks yang diketik dengan isi tiap kartu, sembunyikan yang tidak cocok.
+    // Hanya memakai indexOf + textContent (tanpa innerHTML/RegExp), jadi aman dari injeksi HTML
+    // dan karakter khusus seperti ( [ * tidak membuat error.
+    function applySearch() {
+      var cards = list.querySelectorAll('.fess-card');
+      var query = searchInput ? searchInput.value.trim().toLowerCase() : '';
+      var shown = 0;
+
+      Array.prototype.forEach.call(cards, function (card) {
+        var body = card.querySelector('p');
+        var match = query === '' || (body !== null && body.textContent.toLowerCase().indexOf(query) !== -1);
+        card.hidden = !match;
+        if (match) shown++;
+      });
+
+      if (countLabel && cards.length > 0) {
+        countLabel.textContent = query ? shown + ' dari ' + cards.length + ' fess' : cards.length + ' fess';
+      }
+      if (searchEmpty) {
+        var noMatch = query !== '' && cards.length > 0 && shown === 0;
+        searchEmpty.hidden = !noMatch;
+        searchEmpty.textContent = noMatch ? 'Tidak ada fess yang cocok dengan \u201C' + searchInput.value.trim() + '\u201D.' : '';
+      }
+    }
+
+    function clearSearch() {
+      if (searchInput) searchInput.value = '';
+    }
+
     function render() {
       var posts = loadPosts();
       var frag = document.createDocumentFragment();
@@ -144,6 +177,8 @@
       list.textContent = '';
       if (resetBtn) resetBtn.hidden = !ENABLE_RESET || posts.length === 0;
       if (countLabel) countLabel.textContent = posts.length + ' fess';
+      if (searchWrap) searchWrap.hidden = posts.length === 0;
+      if (posts.length === 0) clearSearch();
 
       if (posts.length === 0) {
         frag.appendChild(buildEmpty('Belum ada fess. Tulis yang pertama lewat formulir.'));
@@ -153,12 +188,16 @@
         });
       }
       list.appendChild(frag);
+      applySearch(); // fess baru / tab lain berubah -> kata kunci yang sedang diketik tetap berlaku
     }
 
     input.addEventListener('input', function () {
       updateCounter();
       clearError();
     });
+
+    // real-time: setiap ketikan langsung menyaring kartu
+    if (searchInput) searchInput.addEventListener('input', applySearch);
 
     form.addEventListener('change', function (e) {
       if (e.target && e.target.name === 'category') clearError();
@@ -196,6 +235,7 @@
       input.value = '';
       clearCategory();
       updateCounter();
+      clearSearch(); // agar fess yang baru dikirim tidak ikut tersembunyi oleh kata kunci lama
       say('Fess terkirim.', 'ok');
       render();
     });

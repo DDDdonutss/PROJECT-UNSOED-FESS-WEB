@@ -164,7 +164,16 @@
           <h2 id="daftar-fess">Daftar Fess <span class="count" id="fess-count"></span></h2>
           <button id="reset-btn" class="btn-fess-outline btn-sm-fess" type="button" hidden>Reset Semua Fess</button>
         </div>
+        <!-- pencarian teks: sengaja di luar <form> agar tombol Enter tidak ikut mengirim fess; muncul hanya jika sudah ada fess -->
+        <div class="fess-search" id="fess-search" hidden>
+          <label class="visually-hidden" for="fess-search-input">Cari isi fess</label>
+          <div class="search-field">
+            <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+            <input id="fess-search-input" class="search-input" type="search" placeholder="Cari isi fess..." maxlength="100" autocomplete="off">
+          </div>
+        </div>
         <div id="fess-container"></div>
+        <p id="search-empty" class="empty-state" role="status" hidden></p>
         <noscript><p class="empty-state">Aktifkan JavaScript di browser untuk menulis dan melihat fess.</p></noscript>
       </div>
     </div>
