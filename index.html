@@ -19,7 +19,10 @@
 </head>
 <body>
 
+<a class="skip-link" href="#main-content">Lewati ke konten utama</a>
+
 <!-- ================= NAVBAR ================= -->
+<header>
 <nav class="navbar navbar-expand-md fixed-top site-nav" data-bs-theme="dark" aria-label="Navigasi utama">
   <div class="container">
     <a class="navbar-brand" href="#home"><img src="images/favicon.svg" alt="" width="30" height="30"><span>UNSOED FESS</span></a>
@@ -38,8 +41,9 @@
     </div>
   </div>
 </nav>
+</header>
 
-<main>
+<main id="main-content">
 
 <!-- ================= #home : HERO ================= -->
 <section class="hero on-dark" id="home">
@@ -99,21 +103,21 @@
       <div class="col-md-4" data-aos="fade-up">
         <article class="kind-card">
           <span class="icon-badge"><i class="fa-solid fa-user-secret" aria-hidden="true"></i></span>
-          <h3>Wadah anonim</h3>
+          <h4>Wadah anonim</h4>
           <p>Memberi wadah anonim untuk aspirasi, lelucon, dan keluh kesah.</p>
         </article>
       </div>
       <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
         <article class="kind-card">
           <span class="icon-badge"><i class="fa-solid fa-heart" aria-hidden="true"></i></span>
-          <h3>Sopan dan membangun</h3>
+          <h4>Sopan dan membangun</h4>
           <p>Menjaga kiriman tetap sopan dan membangun.</p>
         </article>
       </div>
       <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
         <article class="kind-card">
           <span class="icon-badge"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i></span>
-          <h3>Mudah dipakai</h3>
+          <h4>Mudah dipakai</h4>
           <p>Menyajikan tampilan yang sederhana dan mudah dipakai di desktop maupun HP.</p>
         </article>
       </div>
@@ -137,17 +141,17 @@
             <fieldset class="cat-picker" id="cat-picker">
               <legend>Pilih kategori</legend>
               <div class="cat-options">
-                <input class="cat-input" type="radio" name="category" id="cat-aspirasi" value="aspirasi">
+                <input class="cat-input" type="radio" name="category" id="cat-aspirasi" value="aspirasi" required>
                 <label class="cat-chip" for="cat-aspirasi"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i> Aspirasi</label>
-                <input class="cat-input" type="radio" name="category" id="cat-lelucon" value="lelucon">
+                <input class="cat-input" type="radio" name="category" id="cat-lelucon" value="lelucon" required>
                 <label class="cat-chip" for="cat-lelucon"><i class="fa-solid fa-face-laugh-beam" aria-hidden="true"></i> Lelucon</label>
-                <input class="cat-input" type="radio" name="category" id="cat-keluh-kesah" value="keluh-kesah">
+                <input class="cat-input" type="radio" name="category" id="cat-keluh-kesah" value="keluh-kesah" required>
                 <label class="cat-chip" for="cat-keluh-kesah"><i class="fa-solid fa-comment-dots" aria-hidden="true"></i> Keluh Kesah</label>
               </div>
             </fieldset>
 
             <label for="fess-text">Tulis fess kamu</label>
-            <textarea id="fess-text" class="form-control" maxlength="500" rows="6" placeholder="Contoh: Semoga parkiran fakultas ditambah." aria-describedby="counter msg"></textarea>
+            <textarea id="fess-text" class="form-control" maxlength="500" rows="6" required placeholder="Contoh: Semoga parkiran fakultas ditambah." aria-describedby="counter msg"></textarea>
             <div class="form-row-foot">
               <span id="counter">0/500</span>
               <button class="btn-fess" type="submit"><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Kirim Fess</button>
@@ -161,7 +165,7 @@
 
       <div class="col-lg-7">
         <div class="list-head">
-          <h2 id="daftar-fess">Daftar Fess <span class="count" id="fess-count"></span></h2>
+          <h3 id="daftar-fess">Daftar Fess <span class="count" id="fess-count"></span></h3>
           <button id="reset-btn" class="btn-fess-outline btn-sm-fess" type="button" hidden>Reset Semua Fess</button>
         </div>
         <!-- pencarian teks: sengaja di luar <form> agar tombol Enter tidak ikut mengirim fess; muncul hanya jika sudah ada fess -->
@@ -171,6 +175,7 @@
             <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
             <input id="fess-search-input" class="search-input" type="search" placeholder="Cari isi fess..." maxlength="100" autocomplete="off">
           </div>
+          <p id="search-status" class="visually-hidden" role="status"></p>
         </div>
         <div id="fess-container"></div>
         <p id="search-empty" class="empty-state" role="status" hidden></p>
@@ -242,7 +247,7 @@
           <span class="icon-badge"><i class="fa-brands fa-instagram" aria-hidden="true"></i></span>
           <div>
             <strong>Instagram</strong>
-            <a href="https://instagram.com/" target="_blank" rel="noopener">@unsoedfess</a>
+            <a href="https://instagram.com/" target="_blank" rel="noopener">@unsoedfess<span class="visually-hidden"> (buka di tab baru)</span></a>
           </div>
         </div>
       </div>
@@ -251,7 +256,7 @@
           <span class="icon-badge"><i class="fa-brands fa-x-twitter" aria-hidden="true"></i></span>
           <div>
             <strong>X / Twitter</strong>
-            <a href="https://x.com/" target="_blank" rel="noopener">@unsoedfess</a>
+            <a href="https://x.com/" target="_blank" rel="noopener">@unsoedfess<span class="visually-hidden"> (buka di tab baru)</span></a>
           </div>
         </div>
       </div>
