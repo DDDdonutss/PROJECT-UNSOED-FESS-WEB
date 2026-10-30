@@ -1,8 +1,9 @@
 /*!
  * smoothscroll.js - scroll halus untuk menu & tombol anchor (#home, #about, #fess-form, ...), tanpa reload halaman.
  * JavaScript murni (tanpa jQuery), tidak membuat variabel global. Posisi berhenti memakai
- * scroll-margin-top milik elemen tujuan (diatur di style.css) sehingga tidak tertutup navbar
- * dan hasilnya sama dengan lompatan anchor bawaan browser. Menghormati "kurangi gerakan".
+ * scroll-margin-top milik elemen tujuan + scroll-padding-top milik <html> (diatur di style.css)
+ * sehingga tidak tertutup navbar dan hasilnya sama dengan lompatan anchor bawaan browser.
+ * Menghormati "kurangi gerakan".
  */
 (function () {
   'use strict';
@@ -27,7 +28,8 @@
 
     e.preventDefault();
     var margin = parseFloat(window.getComputedStyle(target).scrollMarginTop) || 0;
-    var top = target.getBoundingClientRect().top + window.pageYOffset - margin;
+    var padding = parseFloat(window.getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+    var top = target.getBoundingClientRect().top + window.pageYOffset - margin - padding;
     window.scrollTo({ top: Math.max(top, 0), behavior: reduceMotion() ? 'auto' : 'smooth' });
 
     if (window.history && window.history.pushState) window.history.pushState(null, '', url.hash);
