@@ -1,181 +1,154 @@
-# UNSOED FESS
+# 🎓 UNSOED FESS
 
-Website sederhana untuk mahasiswa Universitas Jenderal Soedirman (Unsoed) agar dapat menyampaikan aspirasi, lelucon, dan keluh kesah tanpa menampilkan nama. Proyek ini dibuat sebagai mini project kelompok dan dikembangkan sebagai website satu halaman (*single-page website*).
+## Deskripsi Project
 
-> **Catatan penting:** Versi repository saat ini berjalan sepenuhnya di browser. Fess yang dikirim disimpan di `localStorage` browser yang sedang digunakan, bukan dikirim ke server atau database. Karena itu, Fess tidak otomatis dibagikan atau terlihat oleh pengguna lain, dan data tidak tersinkron antarperangkat.
+**UNSOED FESS** adalah website satu halaman (*single page*) bagi mahasiswa Universitas Jenderal Soedirman (UNSOED) untuk menyampaikan dan membaca *fess* (menfess) dengan tampilan yang rapi, responsif, dan nyaman digunakan. Pengunjung dapat membaca latar belakang dan aturan UNSOED FESS, mengirim fess lewat formulir yang tervalidasi, melihat serta mencari daftar fess, dan menelusuri kategori fess.
 
-## Tujuan dan Latar Belakang
-
-Mahasiswa sering memiliki saran, cerita, atau keluh kesah seputar kehidupan kampus, tetapi tidak selalu nyaman menyampaikannya dengan identitas pribadi. UNSOED FESS menyediakan antarmuka sederhana untuk menulis dan membaca kiriman secara anonim pada browser masing-masing.
-
-Tujuan proyek:
-
-- Menyediakan media untuk menyampaikan aspirasi, lelucon, dan keluh kesah seputar kehidupan kampus.
-- Membuat proses pengiriman Fess mudah digunakan tanpa membuat akun.
-- Menyediakan tampilan responsif yang dapat diakses melalui desktop maupun perangkat seluler.
-- Menerapkan perhatian dasar terhadap aksesibilitas, privasi, dan kenyamanan penggunaan.
-
-## Fitur dan Section Website
-
-### Fitur
-
-- **Kirim Fess:** Pengguna dapat menulis kiriman tanpa mencantumkan nama.
-- **Tiga kategori:** Aspirasi, Lelucon, dan Keluh Kesah.
-- **Validasi formulir:** Isi Fess tidak boleh kosong, kategori wajib dipilih, dan panjang kiriman maksimal 500 karakter.
-- **Daftar Fess:** Kiriman ditampilkan dengan kategori dan waktu, dengan kiriman terbaru berada di bagian atas.
-- **Pencarian Fess:** Menyaring daftar berdasarkan teks yang diketik.
-- **Penyimpanan lokal:** Kiriman tersimpan di `localStorage` browser dan tetap tersedia setelah halaman dimuat ulang pada browser/origin yang sama.
-- **Reset Fess:** Pengguna dapat menghapus semua kiriman lokal melalui tombol reset.
-- **Mode gelap dan terang:** Pilihan tema disimpan di browser; kunjungan pertama mengikuti preferensi tema perangkat.
-- **Navigasi responsif:** Menu navigasi menyesuaikan ukuran layar dan menyediakan perpindahan antar-section.
-- **Animasi dan aksesibilitas:** Menggunakan animasi saat scroll, indikator fokus keyboard, label formulir, serta dukungan preferensi *reduced motion* pada navigasi scroll.
-
-### Section
-
-1. **Beranda** — pengenalan singkat UNSOED FESS.
-2. **Tentang** — latar belakang, tujuan, visi, misi, dan aturan penggunaan.
-3. **Kirim & Baca Fess** — formulir pengiriman serta daftar kiriman.
-4. **Kategori Fess** — penjelasan kategori Aspirasi, Lelucon, dan Keluh Kesah.
-5. **Kontak** — kanal kontak yang ditampilkan pada halaman.
-6. **Footer** — identitas proyek dan navigasi bagian bawah.
-
-> Informasi kontak pada `index.html` masih menggunakan alamat/tautan contoh. Ganti dengan kontak kelompok yang benar sebelum website dipublikasikan.
-
-## Teknologi yang Digunakan
-
-| Teknologi | Penggunaan |
-|---|---|
-| HTML5 | Struktur dan konten halaman. |
-| CSS3 | Styling, design token, layout responsif, dan tema gelap/terang. |
-| JavaScript | Validasi, pengelolaan Fess, pencarian, penyimpanan lokal, dan interaksi halaman. |
-| Bootstrap | Grid, navbar, komponen, dan utilitas responsif. File CSS dan JavaScript tersedia di repository. |
-| jQuery | Membantu interaksi pada `custom.js`. |
-| AOS (Animate On Scroll) | Animasi elemen ketika halaman digulir. |
-| Font Awesome | Ikon pada navigasi, tombol, dan kategori. |
-| Google Fonts | Font Bricolage Grotesque dan Source Sans 3. Memerlukan koneksi internet agar dapat dimuat dari Google Fonts. |
-| Browser `localStorage` | Penyimpanan Fess dan preferensi tema secara lokal. |
-
-Proyek saat ini tidak menggunakan framework frontend, backend, API, atau database. Tidak diperlukan proses instalasi dependency melalui npm untuk menjalankannya.
-
-## Struktur Repository
-
-```text
-PROJECT-UNSOED-FESS-WEB/
-├── css/
-│   ├── bootstrap.min.css
-│   ├── font-awesome.min.css
-│   ├── aos.css
-│   └── style.css
-├── fonts/
-├── images/
-│   └── favicon.svg
-├── js/
-│   ├── jquery.min.js
-│   ├── bootstrap.min.js
-│   ├── aos.js
-│   ├── theme.js
-│   ├── smoothscroll.js
-│   ├── custom.js
-│   └── app.js
-├── .gitignore
-├── index.html
-├── README.md
-└── engineering.md
-```
-
-Folder `fonts/` dan `images/` juga menyimpan aset pendukung lainnya. Daftar di atas merangkum file dan direktori utama yang digunakan halaman.
-
-## Cara Menjalankan Website Secara Lokal
-
-### Prasyarat
-
-- Git, jika ingin mengunduh repository dengan `git clone`.
-- Browser modern seperti Chrome, Firefox, Edge, atau Safari.
-- Python 3 (opsional, untuk menjalankan server lokal sederhana).
-
-### Langkah menjalankan
-
-1. Clone repository:
-
-   ```bash
-   git clone https://github.com/DDDdonutss/PROJECT-UNSOED-FESS-WEB.git
-   ```
-
-2. Masuk ke folder proyek:
-
-   ```bash
-   cd PROJECT-UNSOED-FESS-WEB
-   ```
-
-3. Jalankan server lokal menggunakan Python:
-
-   ```bash
-   python -m http.server 8000
-   ```
-
-4. Buka alamat berikut di browser:
-
-   ```text
-   http://localhost:8000
-   ```
-
-Alternatifnya, buka file `index.html` langsung melalui browser. Menjalankan server lokal lebih disarankan agar perilaku pemuatan aset dan penyimpanan browser lebih konsisten.
-
-## Dokumentasi Hasil Website
-
-Screenshot halaman belum disertakan dalam repository saat dokumentasi ini disusun. Tambahkan hasil tangkapan layar ke folder `docs/screenshots/` agar tampilan website dapat ditinjau langsung dari repository.
-
-Screenshot yang disarankan:
-
-| Nama file | Tampilan yang didokumentasikan |
-|---|---|
-| `01-homepage.png` | Halaman utama/hero dan navbar. |
-| `02-tentang.png` | Tentang, latar belakang, visi-misi, dan aturan penggunaan. |
-| `03-kirim-fess.png` | Formulir pengiriman dan pilihan kategori. |
-| `04-daftar-fess.png` | Daftar Fess, pencarian, dan contoh hasil kiriman. |
-| `05-mode-gelap.png` | Tampilan website dalam mode gelap. |
-| `06-mobile.png` | Tampilan halaman pada ukuran layar ponsel. |
-
-Pastikan screenshot tidak menampilkan data pribadi. Karena Fess tersimpan secara lokal, gunakan data contoh yang aman saat mengambil screenshot.
-
-**URL deployment:** Belum dicantumkan. Tambahkan URL website di bagian ini apabila proyek sudah di-deploy.
-
-## Anggota Kelompok dan Kontribusi
-
-Nama lengkap dan daftar anggota kelompok tidak dapat dipastikan hanya dari isi repository. Lengkapi tabel berikut dengan data anggota yang sebenarnya sebelum pengumpulan.
-
-| No. | Nama anggota | Username GitHub | Kontribusi pada proyek |
-|---:|---|---|---|
-| 1 | `[Nama lengkap anggota 1]` | `[@username]` | `[Tuliskan kontribusi yang benar-benar dikerjakan]` |
-| 2 | `[Nama lengkap anggota 2]` | `[@username]` | `[Tuliskan kontribusi yang benar-benar dikerjakan]` |
-| 3 | `[Nama lengkap anggota 3]` | `[@username]` | `[Tuliskan kontribusi yang benar-benar dikerjakan]` |
-| 4 | `[Nama lengkap anggota 4]` | `[@username]` | `[Tuliskan kontribusi yang benar-benar dikerjakan]` |
-
-Akun pemilik repository GitHub: [DDDdonutss](https://github.com/DDDdonutss). Konfirmasikan apakah akun tersebut merupakan salah satu anggota kelompok dan tambahkan nama lengkap pemilik akun pada tabel jika sesuai.
-
-### Ringkasan pembagian tugas
-
-Gunakan tabel ini sebagai format pencatatan, bukan sebagai klaim pembagian tugas yang sudah terjadi. Sesuaikan dengan kontribusi aktual setiap anggota.
-
-| Area pekerjaan | Anggota yang bertanggung jawab | Ringkasan pekerjaan |
-|---|---|---|
-| Struktur halaman dan konten HTML | `[Nama anggota]` | `[Section atau elemen yang dikerjakan]` |
-| Desain, responsivitas, dan aksesibilitas | `[Nama anggota]` | `[Styling atau perbaikan yang dikerjakan]` |
-| Logika JavaScript dan penyimpanan Fess | `[Nama anggota]` | `[Fitur yang dikerjakan]` |
-| Pengujian dan dokumentasi | `[Nama anggota]` | `[Pengujian, screenshot, README, atau dokumentasi yang dikerjakan]` |
-
-## Dokumentasi Teknis
-
-Skema arsitektur, aturan pengodean (*coding rules*), struktur data, standar aksesibilitas, keamanan, dan panduan kontribusi dijelaskan lebih lanjut pada [`engineering.md`](engineering.md).
-
-## Catatan Batasan Versi Saat Ini
-
-- Fess disimpan secara lokal di browser, bukan dipublikasikan ke server bersama.
-- Data tidak otomatis berpindah ke browser, perangkat, atau pengguna lain.
-- Penghapusan data browser atau `localStorage` dapat menghilangkan Fess yang tersimpan.
-- Website belum memiliki autentikasi, backend, database terpusat, maupun mekanisme moderasi server.
-- Mode anonim pada tampilan berarti nama pengirim tidak diminta/ditampilkan oleh formulir; hal ini bukan jaminan anonimitas jaringan atau layanan hosting.
+- **Nama project:** UNSOED FESS (repository: `PROJECT-UNSOED-FESS-WEB`)
+- **Jenis project:** Website statis (HTML, CSS, JavaScript) tanpa backend/database
+- **Repository:** https://github.com/DDDdonutss/PROJECT-UNSOED-FESS-WEB
 
 ---
 
-Dibuat untuk mini project kelompok — Universitas Jenderal Soedirman.
+## Anggota Kelompok
+
+| No | Nama | Username GitHub | Peran |
+|----|------|-----------------|-------|
+| 1 | PanjiSuryaGemilang | [@DDDdonutss](https://github.com/DDDdonutss) | Ketua,H1D026089|
+| 2 | PanjiSuryaGemilang2 | [@PanjiSuryaGemilang](https://github.com/PanjiSuryaGemilang) | Anggota,H1D026089 |
+| 3 | PanjiSuryaGemilang3 | [@PanjiSuryaGemilang3](https://github.com/PanjiSuryaGemilang3) | Anggota,H1D026089 |
+
+---
+
+## Tujuan dan Latar Belakang
+
+Di lingkungan kampus, *menfess* sudah menjadi cara yang populer bagi mahasiswa untuk menyampaikan cerita, pertanyaan, maupun informasi. UNSOED FESS dibuat sebagai wadah berbasis web yang lebih tertata: tersedia penjelasan latar belakang, aturan, serta visi dan misi; formulir pengiriman dengan validasi; kategori fess; dan pencarian agar fess mudah ditemukan.
+
+Selain itu, project ini menjadi sarana belajar bagi tim untuk:
+
+- membangun website front-end yang responsif dan dapat diakses dengan baik;
+- berkolaborasi memakai Git dan GitHub (issue → branch → pull request → review → merge).
+
+---
+
+## Fitur dan Section
+
+Website berupa satu halaman (`index.html`) dengan lima section yang dapat diakses lewat navbar:
+
+| Section | Anchor | Isi |
+|---------|--------|-----|
+| Beranda (Hero) | `#home` | Judul "UNSOED FESS", subheadline, dan tombol **Kirim Fess Sekarang** yang menggulir ke formulir. Latar bergambar dengan overlay dan animasi AOS. |
+| Tentang | `#about` | Latar belakang, aturan, serta visi dan misi UNSOED FESS. |
+| Kirim Fess | `#fess-form` | Kotak fess dan daftar fess: validasi input, counter, pencarian, tombol reset, serta penanganan input yang aman dari injeksi HTML. |
+| Kategori | `#categories` | Daftar kategori fess. |
+| Kontak | `#contact` | Informasi kontak. |
+
+**Fitur pendukung**
+
+- **Navbar** dengan 5 menu anchor, tombol menu untuk HP, *smooth scroll*, dan *scrollspy* (menu aktif ditandai dengan `aria-current`).
+- **Dark mode:** tombol bulan/matahari di navbar; pilihan tema tersimpan di `localStorage` sehingga bertahan setelah halaman di-refresh.
+- **Responsif:** tampilan menyesuaikan lebar layar hingga ukuran HP (sekitar 390px); menu mobile terbuka tanpa overflow.
+- **Aksesibilitas:** dukungan mode *reduced motion* (animasi AOS langsung tampil, transisi dinonaktifkan, gulir instan).
+- **Animasi** saat halaman digulir menggunakan AOS.
+
+---
+
+## Teknologi yang Digunakan
+
+| Teknologi | Kegunaan |
+|-----------|----------|
+| HTML5 | Struktur halaman (`index.html`) |
+| CSS3 | Tampilan, tata letak responsif, dan tema terang/gelap |
+| JavaScript | Interaksi: validasi form, counter, daftar fess, pencarian, reset, dan dark mode |
+| Bootstrap 5 (5.3+) | Komponen dan grid responsif, serta theming lewat `data-bs-theme` |
+| jQuery | Pustaka pendukung interaksi |
+| AOS (Animate On Scroll) | Animasi saat halaman digulir |
+| Font Awesome | Ikon, misalnya ikon bulan/matahari pada tombol dark mode |
+| Web Storage (`localStorage`) | Menyimpan pilihan tema |
+| Git & GitHub | Version control, issue, branch, pull request, dan code review |
+
+### Struktur Folder
+
+```
+PROJECT-UNSOED-FESS-WEB/
+├── css/            # Stylesheet
+├── fonts/          # Font lokal
+├── images/         # Gambar dan aset visual
+├── js/             # JavaScript (form, pencarian, dark mode, dll.)
+├── screenshots/    # Tangkapan layar untuk dokumentasi
+├── .gitignore
+├── index.html      # Halaman utama (single page)
+├── DOKUMENTASI.md  # Dokumentasi hasil website
+└── README.md
+```
+
+---
+
+## Cara Menjalankan Secara Lokal
+
+**Prasyarat:** browser modern (Chrome, Edge, atau Firefox). Tidak perlu instalasi dependensi maupun proses build karena project berupa website statis. Jika Bootstrap, jQuery, AOS, atau Font Awesome dimuat lewat CDN, pastikan perangkat terhubung ke internet.
+
+**1. Clone repository**
+
+```bash
+git clone https://github.com/DDDdonutss/PROJECT-UNSOED-FESS-WEB.git
+cd PROJECT-UNSOED-FESS-WEB
+```
+
+**2. Jalankan website** (pilih salah satu)
+
+- **Opsi A — Langsung dari browser:** klik dua kali `index.html`, atau seret file tersebut ke jendela browser.
+- **Opsi B — VS Code + Live Server:** buka folder project di VS Code, pasang ekstensi *Live Server*, lalu klik kanan `index.html` → **Open with Live Server**.
+- **Opsi C — Server lokal dengan Python:** jalankan perintah berikut, lalu buka `http://localhost:8000` di browser.
+
+  ```bash
+  python -m http.server 8000
+  ```
+
+- **Opsi D — Android (untuk pengujian):** buka folder project dengan aplikasi **Acode** (APK dari Play Store), lalu jalankan `index.html`. Pastikan semua file sudah berada di foldernya masing-masing (`css/`, `js/`, `fonts/`, `images/`).
+
+---
+
+## Pembagian Tugas dan Kontribusi
+
+Pekerjaan dipecah menjadi issue berkode **T1–T7**, dikerjakan di branch masing-masing, lalu digabungkan ke `main` lewat pull request yang direview oleh pemilik repository.
+
+| Kode | Issue / PR | Tugas | Penanggung jawab | Hasil utama |
+|------|-----------|-------|------------------|-------------|
+| T1 | #14 / PR #16 | Setup repository dan audit struktur proyek | @DDDdonutss | Kode awal website diunggah; struktur `css/`, `js/`, `fonts/`, `images/` ditata |
+| T2 | #7 | Navbar, smooth-scroll, scrollspy | [ISI] | 5 menu anchor, tombol menu HP, gulir halus, scrollspy |
+| T2 | #17 / PR #18 | Migrasi ke satu halaman | @PanjiSuryaGemilang | 4 halaman digabung menjadi `index.html`; `about.html`, `contact.html`, `fess.html` dihapus |
+| T3 | #8 | Hero/Home | @DDDdonutss | Hero dengan judul, tombol "Kirim Fess Sekarang", latar + overlay, animasi AOS |
+| T3 | #19 / PR #20 | Dark mode | @PanjiSuryaGemilang | Toggle tema terang/gelap yang tersimpan di `localStorage` |
+| T4 | #9 | About (latar belakang, aturan, visi-misi) | @PanjiSuryaGemilang | Section Tentang |
+| T4 | #21 / PR #22 | Fitur Search | @PanjiSuryaGemilang3 | Pencarian fess |
+| T5 | #10 | Kategori Fess | @PanjiSuryaGemilang | Tampilan dan fungsi kategori fess |
+| T5 | #23 / PR #24 | Perbaikan responsif dan aksesibilitas | @PanjiSuryaGemilang3 | Navbar dan menu mobile rapi, mode reduced motion, `aria-current` pada scrollspy |
+| T7 | #12 | Kotak fess + daftar | [ISI] | Formulir tervalidasi, daftar fess, input aman, reset |
+| — | #13, #27 | README, dokumentasi, dan refleksi | [ISI] | README.md, DOKUMENTASI.md, refleksi individu |
+
+**Ringkasan per anggota**
+
+- **@DDDdonutss** — mengelola repository dan alur kerja tim (issue, review, merge), serta mengerjakan setup awal dan section Hero/Home.
+- **@PanjiSuryaGemilang** — migrasi ke satu halaman, dark mode, serta section About dan Kategori.
+- **@PanjiSuryaGemilang3** — fitur pencarian serta perbaikan responsif dan aksesibilitas.
+
+**Alur kerja tim**
+
+1. Ambil issue yang ditugaskan.
+2. Buat branch dari `main` terbaru, misalnya `feature/dark-mode`, `feature/search-fess`, atau `chore/migration-page`.
+3. Commit dan push perubahan.
+4. Buka pull request yang menautkan issue (`Closes #nomor`).
+5. Minta review, lalu merge ke `main` setelah disetujui.
+
+Riwayat lengkap dapat dilihat pada [issue yang sudah ditutup](https://github.com/DDDdonutss/PROJECT-UNSOED-FESS-WEB/issues?q=is%3Aissue+state%3Aclosed) dan [pull request](https://github.com/DDDdonutss/PROJECT-UNSOED-FESS-WEB/pulls?q=is%3Apr+is%3Aclosed).
+
+---
+
+## Dokumentasi
+
+
+
+https://github.com/user-attachments/assets/96f96c08-cee0-42f2-89e0-977d051567b6
+
+
