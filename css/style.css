@@ -348,6 +348,32 @@ a:hover { color: var(--text); }
 .list-head h2 { margin: 0; font-size: clamp(1.5rem, 3vw, 1.9rem); }
 .list-head .count { font: 400 .95rem var(--font-body); color: var(--muted); margin-left: .5rem; }
 #fess-container { display: grid; gap: 28px; padding-top: 10px; }
+
+/* pencarian fess (memakai variabel warna yang sama, jadi otomatis ikut mode gelap) */
+.fess-search { margin-bottom: 1rem; }
+.search-field { position: relative; max-width: 360px; }
+.search-field > i {
+  position: absolute;
+  left: .9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  pointer-events: none;
+}
+.search-input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--paper);
+  border: 2px solid var(--line);
+  border-radius: 6px;
+  padding: .45rem .75rem .45rem 2.5rem;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search-input::placeholder { color: var(--muted); opacity: 1; }
+.search-input:focus { outline: 0; border-color: var(--orange); box-shadow: 0 0 0 .2rem rgba(232, 137, 43, .25); }
 .fess-card p { margin: 0 0 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
 .fess-card time { display: block; font-size: .9rem; color: var(--muted); }
 .fess-card time::before {
